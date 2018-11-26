@@ -16,7 +16,7 @@ static const QString HUD_SPECIAL = "Specials: %0";
 
 
 //!
-//! \brief The Hud class
+//! \brief The Hud class - draws the information of gameplay to the player
 //!
 class Hud final
 {

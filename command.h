@@ -7,7 +7,7 @@ class Entity;
 class Game;
 
 //!
-//! \brief The Command class
+//! \brief The Command class - a base class for the command pattern , works more like an interface than a class
 //!
 class Command
 {

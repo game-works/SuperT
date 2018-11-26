@@ -3,7 +3,13 @@ MIT license.
 
 This game is a second iteration (or should I say tentative) to make a simple game. The motivation was to improve my understanding of Qt/QGraphics framework. Some of the design ideas were copied from this great book: http://www.gameprogrammingpatterns.com/
 
-There is a ton of things to improve, ranging from design (maybe use composition in form of an ECS) and performance, there are some performance degradation when a lot of entities are displayed. Probably some bugs here and there too. I hope this code is useful to other people as an educational tool for making applications in C++ and Qt.
+There is a ton of things to improve, ranging from design (maybe use composition in form of an ECS) and performance. I've ended up using SIGNAL/SLOTS from Qt and that wasn't on my plans, I've wanted to avoid using much of the Meta object from Qt, but that simplifies a lot the message broking between classes. Maybe on a further iteration I'll change this to a custo publish/subscriber solution.
+
+Some performance degradation is happening when a lot of entities are displayed maybe this might be related to QGraphicsScene management, another oportunity is to build a custom scene management.
+
+Also there is certanly some bugs here and there too, feel free to hunt them! 
+
+I hope this code is useful to other people as an educational tool for making applications in C++ and Qt.
 
 Some screens of the game:
 

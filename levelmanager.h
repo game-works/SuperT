@@ -1,7 +1,10 @@
 #ifndef LEVELMANAGER_H
 #define LEVELMANAGER_H
 
-#include <QPixmap>
+#include <QObject>
+
+static const int LEVEL_MANAGER_POINT_BASE = 200;
+static const int LEVEL_MANAGER_SPECIAL_BASE = 100;
 
 //!
 //! \brief The LevelManager class - "manage" level changes and game overall difficulty associated with level
@@ -37,15 +40,24 @@ public:
     //!
     qreal enemySpawnBase();
 
+    //!
+    //! \brief currentLevel - return the number of the current level
+    //! \return
+    //!
     int currentLevel() const;
 
-public slots:
+    //!
+    //! \brief reset - reset level to the start (zero)
+    //!
+    void reset();
 
-    //!
-    //! \brief processPlayerPoints -
-    //! \param points
-    //!
-    void processPlayerPoints(int points);
+    void increasePlayerPoint();
+
+    void consumePlayerSpecial();
+
+    int playerPoints() const;
+
+    int playerSpecials() const;
 
 private:
 
@@ -54,10 +66,25 @@ private:
     //!
     int level_;
 
+    //!
+    //! \brief baseLife_ - basic life points for entities
+    //!
     int baseLife_;
 
+    //!
+    //! \brief baseSpawn_ - the basic timing for spawning entities
+    //!
     int baseSpawn_;
 
+    //!
+    //! \brief playerPoints_ - current gameplay points
+    //!
+    int playerPoints_;
+
+    //!
+    //! \brief playerSpecials_ - player special power quantity
+    //!
+    int playerSpecials_;
 };
 
 #endif // LEVELMANAGER_H

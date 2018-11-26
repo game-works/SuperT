@@ -31,6 +31,8 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
       artilleryMs_(TIMER_STD_ARTILLERY),
       tankMs_(TIMER_STD_TANK),
       fps_(0),
+      playerPoints_(0),
+      playerSpecials_(0),
       aircraft_(new EntityPool<Aircraft, 300>(scene)),
       bushes_(new EntityPool<Bush, 800>(scene)),
       rocks_(new EntityPool<Rock, 2000>(scene)),
@@ -53,9 +55,10 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
       vultureLife_(LIFE_VULTURE),
       helicopterLife_(LIFE_HELICOPTER),
       aircraftLife_(LIFE_AIR_ENEMY),
-      artilleryLife_(LIFE_ARTILLERY),
-      state_(GS_DEMO)
+      artilleryLife_(LIFE_ARTILLERY)
 {
+//    setCacheMode(QGraphicsView::CacheBackground); TODO check if this is necessary or perfomance enhancement
+
     // connect the main loop event
     connect(&tick_, &QTimer::timeout, this, &Game::loop);
     // props
@@ -72,9 +75,10 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
     connect(&fpsTimer_, &QTimer::timeout, this, &Game::fpsUpdate);
     // level handling events
     connect(level_.data(), &LevelManager::increaseLevel, this, &Game::processLevel);
+    connect(this, &Game::pointIncrease, level_.data(), &LevelManager::processPlayerPoints);
 
     connect(menu_.data(), &Menu::start, this, &Game::play);
-    connect(menu_.data(), &Menu::showSignal, this, &Game::init);
+    connect(menu_.data(), &Menu::showSignal, this, &Game::startDemo);
 
     explosion_ = QSharedPointer<SpriteSheet>(new SpriteSheet(130, 125, ":/exp/air/images/supert_exp.png", 37, 0, 0, -40));
     explosion_->setParentItem(player_.data()); // bind explosion effect with player
@@ -90,8 +94,7 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
     inputhandler_.bind(Qt::Key_Control, QSharedPointer<Command>(new BombCommand()));
     inputhandler_.bind(Qt::Key_Alt, QSharedPointer<Command>(new SpecialCommand()));
 
-    hud_->init();
-    menu_->init();
+    init();
 }
 
 Game::~Game()
@@ -135,11 +138,14 @@ void Game::keyReleaseEvent(QKeyEvent *event)
     if(state_ == GS_PLAY)
         keys_.remove(Qt::Key(event->key()));
 
-    //TODO testing
-    if(Qt::Key(event->key()) == Qt::Key_L)
-    {
-        level_->increasePlayerPoint();
-    }
+    if(Qt::Key(event->key()) == Qt::Key_L);
+}
+
+void Game::startDemo()
+{
+    player_->setPosition(PLAYER_START_POS);
+    hud_->show(false);
+    state_ = GS_DEMO;
 }
 
 void Game::demo()
@@ -188,6 +194,7 @@ void Game::processLevel()
     if(!QPixmapCache::find(s, p))
         QPixmapCache::find("background_1", p); // if something goes wrong fallback to default
     QBrush b(p);
+    //setBackgroundBrush(b);
     scene()->setBackgroundBrush(b);
     scene()->update();
 }
@@ -205,8 +212,7 @@ void Game::fpsUpdate()
 
 void Game::init()
 {
-    tick_.stop();
-    resetEntities();
+    entities_.clear();
     keys_.clear();
 
     time_ = 0;
@@ -215,7 +221,8 @@ void Game::init()
     //re-create a new player
     player_->init(PLAYER_START_POS, PLAYER_STD_VELOCITY);
 
-    hud_->show(false);
+    menu_->init();
+    hud_->init();
 
     state_ = GS_DEMO;
 
@@ -239,7 +246,7 @@ void Game::init()
 
 void Game::resetEntities()
 {
-    for(const auto &e : entities_)
+    for(auto e : entities_)
     {
         e->reset();
     }
@@ -249,8 +256,6 @@ void Game::resetEntities()
 void Game::play()
 {
     tick_.stop();
-
-    level_->reset();
 
     keys_.clear();
 
@@ -347,18 +352,18 @@ QSharedPointer<Special> Game::createSpecial()
 
 int Game::playerSpecials() const
 {
-    return level_->playerSpecials();
-}
-
-int Game::playerPoints() const
-{
-    return level_->playerPoints();
+    return playerSpecials_;
 }
 
 void Game::specialCoolDownWarning(int currentcooldown)
 {
     hud_->displayCoolDownWarning(currentcooldown);
-    level_->consumePlayerSpecial();
+    playerSpecials_--;
+}
+
+int Game::playerPoints() const
+{
+    return playerPoints_;
 }
 
 int Game::fps() const
@@ -446,7 +451,11 @@ void Game::loop()
                             bullet->hit(); //remove the used bullet from the game
                             if(state_ == GS_PLAY && e->dead())
                             {
-                                level_->increasePlayerPoint();
+                                emit pointIncrease(++playerPoints_);
+                                if(playerPoints_ % 100 == 0) //TODO move this logic to level manager ?!
+                                {
+                                    playerSpecials_++;
+                                }
                             }
                         }
                     }

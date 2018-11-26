@@ -18,7 +18,7 @@ static const QPointF PLAYER_STD_VELOCITY = QPointF(0.01,0.02);
 class SpriteSheet;
 
 //!
-//! \brief The Player class
+//! \brief The Player class - the player is a basic entity with an special update method
 //!
 class Player : public Entity
 {

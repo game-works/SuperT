@@ -76,14 +76,11 @@ enum GAME_STATES {
 };
 
 //!
-//! \brief The Game class
+//! \brief The Game class - the game engine main class
 //!
 class Game : public QGraphicsView
 {
     Q_OBJECT
-signals:
-    void pointIncrease(int);
-    //void startPlay();
 
 public:
     Game(QGraphicsScene *scene, QWidget *parent = nullptr);
@@ -116,14 +113,11 @@ protected:
                                    QPointF vel = QPointF(0, 0),
                                    qreal angle = 0.0);
 
-    void init();
+
 
     void demo();
 
-    void over();
-
     void play();
-
 
 protected slots:
 
@@ -132,7 +126,10 @@ protected slots:
     //!
     void loop();
 
-    void startDemo();
+    //!
+    //! \brief init - prepares the scene and entities to be diplayed
+    //!
+    void init();
 
     //!
     //! \brief processLevel - process a game level increase
@@ -318,10 +315,6 @@ private:
     int tankMs_;
 
     int fps_; // frames per seconds calculated
-
-    int playerPoints_; // current gameplay points
-
-    int playerSpecials_; // player special power quantity
 
     //! cache of pre-loaded re-usable entities
     EntityPool<Aircraft, 300> *aircraft_;

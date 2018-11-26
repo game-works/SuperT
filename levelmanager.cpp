@@ -1,10 +1,28 @@
 #include "levelmanager.h"
 
-#include <QPixmapCache>
-
-LevelManager::LevelManager() : level_(1), baseLife_(1), baseSpawn_(1000)
+LevelManager::LevelManager() : level_(1), baseLife_(1), baseSpawn_(1000), playerPoints_(0), playerSpecials_(0)
 {
 }
+
+void LevelManager::increasePlayerPoint()
+{
+    ++playerPoints_;
+    if(playerPoints_ != 0 && playerPoints_ % LEVEL_MANAGER_POINT_BASE == 0)
+    {
+        level_++;
+        emit increaseLevel();
+    }
+    if(playerPoints_ % LEVEL_MANAGER_SPECIAL_BASE == 0)
+    {
+        playerSpecials_++;
+    }
+}
+
+void LevelManager::consumePlayerSpecial()
+{
+    playerSpecials_--;
+}
+
 
 QString LevelManager::currentBackground()
 {
@@ -23,16 +41,26 @@ qreal LevelManager::enemySpawnBase()
     return (1.0/level_);
 }
 
-void LevelManager::processPlayerPoints(int points)
+int LevelManager::playerSpecials() const
 {
-    if(points != 0 && points % 100 == 0)
-    {
-        level_++;
-        emit increaseLevel();
-    }
+    return playerSpecials_;
+}
+
+int LevelManager::playerPoints() const
+{
+    return playerPoints_;
 }
 
 int LevelManager::currentLevel() const
 {
     return level_;
+}
+
+void LevelManager::reset()
+{
+    level_ = 1;
+    baseLife_ = 1;
+    baseSpawn_ = 1000;
+    playerPoints_ = 0;
+    playerSpecials_ = 0;
 }
