@@ -119,6 +119,10 @@ protected:
 
     void play();
 
+    // QGraphicsView interface
+protected:
+    void drawBackground(QPainter *painter, const QRectF &rect);
+
 protected slots:
 
     //!
@@ -135,6 +139,11 @@ protected slots:
     //! \brief processLevel - process a game level increase
     //!
     void processLevel();
+
+    //!
+    //! \brief processLife - increase life of the player, event comes from levelmanager
+    //!
+    void processLife();
 
 public slots:
 
@@ -184,7 +193,7 @@ public slots:
     //! \return
     //!
     QSharedPointer<PlayerShot> createPlayerShoot(QPointF pos = QPointF(0, 0),
-                                                 QPointF vel = QPointF(0, 0));
+                                                 QPointF vel = QPointF(0, 0), int life = LIFE_PROP);
     //!
     //! \brief createAirExplosion
     //!
@@ -216,7 +225,7 @@ public slots:
     //! \return
     //!
     QSharedPointer<PlayerBomb> createPlayerBomb(QPointF pos = QPointF(0, 0),
-                                                QPointF vel = QPointF(0, 0));
+                                                QPointF vel = QPointF(0, 0), int life = LIFE_PROP);
     //!
     //! \brief createEnemyShot
     //! \param pos
@@ -292,6 +301,8 @@ private:
     QTimer artilleryTimer_;
     QTimer tankTimer_;
 
+    QPixmap background_;
+
 //  THE FOLLOWING ATTRIBUTES NEED TO BE INITIALIZED IN CONSTRUCTOR
 
     // total ammount of time since start of the game loop
@@ -318,13 +329,13 @@ private:
 
     //! cache of pre-loaded re-usable entities
     EntityPool<Aircraft, 300> *aircraft_;
-    EntityPool<Bush, 800> *bushes_;
-    EntityPool<Rock, 2000> *rocks_;
+    EntityPool<Bush, 1500> *bushes_;
+    EntityPool<Rock, 2500> *rocks_;
     EntityPool<Cloud, 300> *clouds_;
     EntityPool<Vulture, 100> *vultures_;
     EntityPool<Helicopter, 100> *helicopter_;
-    EntityPool<PlayerShot, 1000> *playerShots_;
-    EntityPool<PlayerBomb, 1000> *playerBombs_;
+    EntityPool<PlayerShot, 3000> *playerShots_;
+    EntityPool<PlayerBomb, 2000> *playerBombs_;
     EntityPool<AirExplosion, 400> *airExplosions_;
     EntityPool<GroundExplosion, 400> *groundExplosions_;
     EntityPool<Tank, 150> *tanks_;
@@ -345,7 +356,6 @@ private:
     int artilleryLife_;
 
     GAME_STATES state_;
-
 };
 
 #endif // GAME_H

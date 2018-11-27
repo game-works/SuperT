@@ -32,13 +32,13 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
       tankMs_(TIMER_STD_TANK),
       fps_(0),
       aircraft_(new EntityPool<Aircraft, 300>(scene)),
-      bushes_(new EntityPool<Bush, 800>(scene)),
-      rocks_(new EntityPool<Rock, 2000>(scene)),
+      bushes_(new EntityPool<Bush, 1500>(scene)),
+      rocks_(new EntityPool<Rock, 2500>(scene)),
       clouds_(new EntityPool<Cloud, 300>(scene)),
       vultures_(new EntityPool<Vulture, 100>(scene)),
       helicopter_(new EntityPool<Helicopter, 100>(scene)),
-      playerShots_(new EntityPool<PlayerShot, 1000>(scene)),
-      playerBombs_(new EntityPool<PlayerBomb, 1000>(scene)),
+      playerShots_(new EntityPool<PlayerShot, 3000>(scene)),
+      playerBombs_(new EntityPool<PlayerBomb, 2000>(scene)),
       airExplosions_(new EntityPool<AirExplosion, 400>(scene)),
       groundExplosions_(new EntityPool<GroundExplosion, 400>(scene)),
       tanks_(new EntityPool<Tank, 150>(scene)),
@@ -56,6 +56,8 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
       artilleryLife_(LIFE_ARTILLERY),
       state_(GS_DEMO)
 {
+    setCacheMode(QGraphicsView::CacheNone);
+
     // connect the main loop event
     connect(&tick_, &QTimer::timeout, this, &Game::loop);
     // props
@@ -72,6 +74,7 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
     connect(&fpsTimer_, &QTimer::timeout, this, &Game::fpsUpdate);
     // level handling events
     connect(level_.data(), &LevelManager::increaseLevel, this, &Game::processLevel);
+    connect(level_.data(), &LevelManager::increaseLife, this, &Game::processLife);
 
     connect(menu_.data(), &Menu::start, this, &Game::play);
     connect(menu_.data(), &Menu::showSignal, this, &Game::init);
@@ -95,7 +98,11 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
 }
 
 Game::~Game()
-{
+{    
+    for(auto e : entities_)
+        e.clear();
+    entities_.clear();
+
     delete aircraft_;
     delete bushes_;
     delete rocks_;
@@ -110,10 +117,6 @@ Game::~Game()
     delete artillery_;
     delete enemyShots_;
     delete artilleryShots_;
-
-    for(auto e : entities_)
-        e.clear();
-    entities_.clear();
 
     player_.clear();
     explosion_.clear();
@@ -134,12 +137,6 @@ void Game::keyReleaseEvent(QKeyEvent *event)
 {
     if(state_ == GS_PLAY)
         keys_.remove(Qt::Key(event->key()));
-
-    //TODO testing
-    if(Qt::Key(event->key()) == Qt::Key_L)
-    {
-        level_->increasePlayerPoint();
-    }
 }
 
 void Game::demo()
@@ -147,6 +144,7 @@ void Game::demo()
     if(state_ == GS_DEMO)
     {
         QPointF v;
+        // simple random movement
         qreal div = QRandomGenerator::global()->bounded(50, 100);
         qreal x = QRandomGenerator::global()->bounded(-10, 11);
         qreal y = QRandomGenerator::global()->bounded(-10, 11);
@@ -183,13 +181,17 @@ void Game::processLevel()
     aircraftLife_ = baselife * LIFE_AIR_ENEMY;
     artilleryLife_ = baselife * LIFE_ARTILLERY;
 
+    // selects the next background based on level id
     QString s = level_->currentBackground();
-    QPixmap p;
-    if(!QPixmapCache::find(s, p))
-        QPixmapCache::find("background_1", p); // if something goes wrong fallback to default
-    QBrush b(p);
-    scene()->setBackgroundBrush(b);
-    scene()->update();
+    if(!QPixmapCache::find(s, background_))
+        QPixmapCache::find("background_1", background_);
+}
+
+void Game::processLife()
+{
+    int i = player_->life();
+    player_->setLife(++i);
+    // TODO maybe introduce a temporary invencibility for fun
 }
 
 void Game::removeExplosion()
@@ -206,6 +208,9 @@ void Game::fpsUpdate()
 void Game::init()
 {
     tick_.stop();
+
+    level_->reset();
+
     resetEntities();
     keys_.clear();
 
@@ -250,8 +255,6 @@ void Game::play()
 {
     tick_.stop();
 
-    level_->reset();
-
     keys_.clear();
 
     resetEntities();
@@ -295,9 +298,9 @@ QSharedPointer<Helicopter> Game::createHelicopter()
     return createEntity(helicopter_, helicopterLife_);
 }
 
-QSharedPointer<PlayerShot> Game::createPlayerShoot(QPointF pos, QPointF vel)
+QSharedPointer<PlayerShot> Game::createPlayerShoot(QPointF pos, QPointF vel, int life)
 {
-    return createEntity(playerShots_, LIFE_PROP, pos, vel);
+    return createEntity(playerShots_, life, pos, vel);
 }
 
 QSharedPointer<Explosion> Game::createAirExplosion(QPointF pos, QPointF vel)
@@ -320,9 +323,9 @@ QSharedPointer<Artillery> Game::createArtillery()
     return createEntity(artillery_, artilleryLife_);
 }
 
-QSharedPointer<PlayerBomb> Game::createPlayerBomb(QPointF pos, QPointF vel)
+QSharedPointer<PlayerBomb> Game::createPlayerBomb(QPointF pos, QPointF vel, int life)
 {
-    return createEntity(playerBombs_, LIFE_PROP, pos, vel);
+    return createEntity(playerBombs_, life, pos, vel);
 }
 
 QSharedPointer<EnemyShot> Game::createEnemyShot(QPointF pos, QPointF vel, qreal angle)
@@ -492,4 +495,10 @@ QSharedPointer<T> Game::createEntity(EntityPool<T, N> *pool, int life, QPointF p
         e->init(pos, vel, angle, life);
     }
     return e;
+}
+
+
+void Game::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    painter->drawPixmap(rect, background_, rect);
 }

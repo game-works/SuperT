@@ -3,8 +3,10 @@
 
 #include <QObject>
 
-static const int LEVEL_MANAGER_POINT_BASE = 200;
+static const int LEVEL_MANAGER_POINT_BASE = 50;
 static const int LEVEL_MANAGER_SPECIAL_BASE = 100;
+static const int LEVEL_MANAGER_LIFE_BASE = 50;
+
 
 //!
 //! \brief The LevelManager class - "manage" level changes and game overall difficulty associated with level
@@ -15,6 +17,7 @@ class LevelManager final : public QObject
     Q_OBJECT
 signals:
     void increaseLevel();
+    void increaseLife();
 
 public:
     LevelManager();

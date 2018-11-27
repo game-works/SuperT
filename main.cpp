@@ -7,12 +7,11 @@ void loadPixmapCache()
 {
     QPixmapCache::setCacheLimit(40240);
     QPixmapCache::insert("supert", QPixmap(":/entity/air/images/supert.png"));
-    //QPixmapCache::insert("background", QPixmap(":/scenario/images/background.png"));
-    QPixmapCache::insert("background_5", QPixmap(":/scenario/images/background_1.png"));
+    QPixmapCache::insert("background_1", QPixmap(":/scenario/images/background_1.png"));
     QPixmapCache::insert("background_2", QPixmap(":/scenario/images/background_2.png"));
     QPixmapCache::insert("background_3", QPixmap(":/scenario/images/background_3.png"));
     QPixmapCache::insert("background_4", QPixmap(":/scenario/images/background_4.png"));
-    QPixmapCache::insert("background_1", QPixmap(":/scenario/images/background_5.png"));
+    QPixmapCache::insert("background_5", QPixmap(":/scenario/images/background_5.png"));
     QPixmapCache::insert("background_6", QPixmap(":/scenario/images/background_6.png"));
     QPixmapCache::insert("background_7", QPixmap(":/scenario/images/background_7.png"));
     QPixmapCache::insert("bush_1", QPixmap(":/scenario/images/bush_1.png"));

@@ -66,7 +66,7 @@ void Hud::init()
     points_->setDefaultTextColor(Qt::black);
     fps_->setDefaultTextColor(Qt::darkYellow);
     life_->setDefaultTextColor(Qt::darkCyan);
-    special_->setDefaultTextColor(Qt::darkBlue);
+    special_->setDefaultTextColor(Qt::lightGray);
 
     level_->setZValue(Z_PLANE_HUD);
     points_->setZValue(Z_PLANE_HUD);

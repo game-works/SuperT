@@ -13,6 +13,8 @@ static const QPointF SPECIAL_START_POS = QPointF(-50,0);
 //!
 static const QPointF SPECIAL_STD_VELOCITY = QPointF(0.2, 0.0);
 
+static const int SPECIAL_BOMB_LIFE = 10; // makes the special bomb a little bit more effective
+static const int SPECIAL_SHOT_LIFE = 5;  // makes the special shot a little bit more effective
 
 //!
 //! \brief The Special class

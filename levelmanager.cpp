@@ -7,14 +7,20 @@ LevelManager::LevelManager() : level_(1), baseLife_(1), baseSpawn_(1000), player
 void LevelManager::increasePlayerPoint()
 {
     ++playerPoints_;
-    if(playerPoints_ != 0 && playerPoints_ % LEVEL_MANAGER_POINT_BASE == 0)
+    if(playerPoints_ != 0 && (playerPoints_ % (LEVEL_MANAGER_POINT_BASE * level_)) == 0) // increase the level size as level increases
     {
         level_++;
         emit increaseLevel();
     }
+
     if(playerPoints_ % LEVEL_MANAGER_SPECIAL_BASE == 0)
     {
         playerSpecials_++;
+    }
+
+    if(playerPoints_ % LEVEL_MANAGER_LIFE_BASE == 0)
+    {
+        emit increaseLife();
     }
 }
 

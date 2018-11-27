@@ -34,7 +34,7 @@ void Entity::update(Game *game, int dt)
     position_.setY(position_.y() + (velocity_.y() * dt));
     setPos(position_);
 
-    if(lastLife_ > life_)
+    if(lastLife_ != life_)
     {
         lastLife_ = life_;
     }

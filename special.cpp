@@ -30,8 +30,7 @@ void Special::update(Game *game, int dt)
 {
     time_ += dt;
     //first pass
-    //if(time_ < 2000)
-    if(time_ < 2800)
+    if(time_ < 2800) //2.8 sec
     {
         velocity_.setY(0.3*qFastSin(qDegreesToRadians(position_.x())));
         //aircraft attack
@@ -40,24 +39,24 @@ void Special::update(Game *game, int dt)
         {
             QPointF v = SHOT_STD_VELOCITY;
             v.setX(v.x() + velocity_.x());
-            game->createPlayerShoot(position_ + boundingRect().center(), v);
+            game->createPlayerShoot(position_ + boundingRect().center(), v, SPECIAL_SHOT_LIFE);
             firerate_ = 0;
         }
     }
-    else if(position_.x() > (GAME_WIDTH)) // + boundingRect().width()
+    else if(position_.x() > (GAME_WIDTH))
     {
-        position_.setX(0);//-boundingRect().width());
+        position_.setX(0);
         position_.setY(GAME_HEIGHT/4);
     }
-
-    if(time_ > 3000)
+    // second pass
+    if(time_ > 3000) // 3 sec
     {
         velocity_.setY(0.1*qFastSin(qDegreesToRadians(position_.x())));
         //aircraft attack
         firerate_+= dt;
         if(firerate_ > 150)
         {
-            game->createPlayerBomb(position_ + boundingRect().center(), PBOMB_STD_VELOCITY);
+            game->createPlayerBomb(position_ + boundingRect().center(), PBOMB_STD_VELOCITY, SPECIAL_BOMB_LIFE);
             firerate_ = 0;
         }
     }
