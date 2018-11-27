@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-static const int LEVEL_MANAGER_POINT_BASE = 50;
+static const int LEVEL_MANAGER_POINT_BASE = 40;
 static const int LEVEL_MANAGER_SPECIAL_BASE = 100;
 static const int LEVEL_MANAGER_LIFE_BASE = 50;
 

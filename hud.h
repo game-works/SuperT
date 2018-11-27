@@ -4,7 +4,7 @@
 #include <QString>
 
 class QGraphicsScene;
-class QGraphicsTextItem;
+class QGraphicsSimpleTextItem;
 class Game;
 
 
@@ -39,11 +39,11 @@ public:
 private:
     QGraphicsScene *scene_;
     //screen texts
-    QGraphicsTextItem* points_;
-    QGraphicsTextItem* level_;
-    QGraphicsTextItem* fps_;
-    QGraphicsTextItem* life_;
-    QGraphicsTextItem* special_;
+    QGraphicsSimpleTextItem* points_;
+    QGraphicsSimpleTextItem* level_;
+    QGraphicsSimpleTextItem* fps_;
+    QGraphicsSimpleTextItem* life_;
+    QGraphicsSimpleTextItem* special_;
 
     int time_;
     bool blinkspecial_;
