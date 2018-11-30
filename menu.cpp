@@ -154,7 +154,7 @@ void Menu::show(bool show)
     score_->setVisible(show);
     help_->setVisible(show);
     about_->setVisible(show);
-
+    title_->setVisible(show);
     abouttext_->setVisible(false);
     helptext_->setVisible(false);
     scoretext_->setVisible(false);
