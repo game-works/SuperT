@@ -6,8 +6,8 @@ LevelManager::LevelManager() : level_(1), baseLife_(1), baseSpawn_(1000), player
 
 void LevelManager::increasePlayerPoint()
 {
-    ++playerPoints_;
-    if(playerPoints_ != 0 && (playerPoints_ % (LEVEL_MANAGER_POINT_BASE * level_)) == 0) // increase the level size as level increases
+    playerPoints_ += LEVEL_MANAGER_POINT_BASE;
+    if(playerPoints_ != 0 && (playerPoints_ % (LEVEL_MANAGER_POINT_THRESHOLD * level_)) == 0) // increase the level size as level increases
     {
         level_++;
         emit increaseLevel();
@@ -32,7 +32,7 @@ void LevelManager::consumePlayerSpecial()
 
 QString LevelManager::currentBackground()
 {
-    auto b = level_ % 7; // there are 7 background images...
+    auto b = (level_ % 7) + 1; // there are 7 background images... start from 2
     QString background = QString("background_%1").arg(b);
     return background;
 }

@@ -182,9 +182,17 @@ void Game::processLevel()
     artilleryLife_ = baselife * LIFE_ARTILLERY;
 
     // selects the next background based on level id
-    QString s = level_->currentBackground();
-    if(!QPixmapCache::find(s, background_))
+    if(state_ == GS_DEMO)
         QPixmapCache::find("background_1", background_);
+    else
+    {
+        QString s = level_->currentBackground();
+        if(!QPixmapCache::find(s, background_))
+            QPixmapCache::find("background_1", background_);
+
+        qDebug() << s;
+    }
+
 }
 
 void Game::processLife()

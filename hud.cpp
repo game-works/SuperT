@@ -103,7 +103,7 @@ void Hud::update(Game *game, int dt)
         else
         {
             blinkspecial_ = false;
-            special_->setBrush(Qt::darkBlue);
+            special_->setBrush(Qt::lightGray);
         }
         blinkspecialtime_ -= dt;
     }
