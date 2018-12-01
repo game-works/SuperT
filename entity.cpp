@@ -72,7 +72,7 @@ void Entity::init(QPointF pos, QPointF vel, qreal angle, int life)
     velocity_ = vel;
     life_ = life;
     //name_.clear();
-    inuse_ = (false);
+    inuse_ = (true);
     air_ = (false);
     collidable_ = (false);
     enemy_ = (false);

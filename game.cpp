@@ -250,6 +250,9 @@ void Game::init()
 {
     tick_.stop();
 
+    explosion_->stop();
+    explosion_->setVisible(false);
+
     level_->reset();
 
     resetEntities();
@@ -475,8 +478,7 @@ void Game::loop()
                 // check enemies hit by friends only
                 if(e->enemy() && e->collidable() && e->destructible())
                 {
-                    QList<QGraphicsItem*> entityList = e->collidingItems();
-                    QListIterator<QGraphicsItem*> eIt(entityList);
+                    QListIterator<QGraphicsItem*> eIt(e->collidingItems());
                     while(eIt.hasNext())
                     {
                         QGraphicsItem* graph = eIt.next();
@@ -494,6 +496,7 @@ void Game::loop()
                             }
                         }
                     }
+
                 }
             }
         }
@@ -514,6 +517,7 @@ void Game::loop()
                 if(state_ == GS_PLAY && player_->dead())
                 {
                     state_ = GS_OVER;
+                    explosion_->animate(25, true);
                     menu_->showGameOver();
                     hud_->show(false);
                 }
