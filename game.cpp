@@ -93,6 +93,16 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
     inputhandler_.bind(Qt::Key_Control, QSharedPointer<Command>(new BombCommand()));
     inputhandler_.bind(Qt::Key_Alt, QSharedPointer<Command>(new SpecialCommand()));
 
+    background1_ = QPixmap(":/scenario/images/background_1.png");
+    background2_ = QPixmap(":/scenario/images/background_2.png");
+    background3_ = QPixmap(":/scenario/images/background_3.png");
+    background4_ = QPixmap(":/scenario/images/background_4.png");
+    background5_ = QPixmap(":/scenario/images/background_5.png");
+    background6_ = QPixmap(":/scenario/images/background_6.png");
+    background7_ = QPixmap(":/scenario/images/background_7.png");
+
+    currentBackground_ = background1_;
+
     hud_->init();
     menu_->init();
 }
@@ -163,36 +173,59 @@ void Game::demo()
 void Game::processLevel()
 {
     qreal basetime = level_->enemySpawnBase();
-    tankMs_ = static_cast<int>(basetime * TIMER_STD_TANK);
+    tankMs_ = static_cast<int>(TIMER_STD_TANK - basetime);
     tankTimer_.start(tankMs_);
-    vultureMs_ = static_cast<int>(basetime * TIMER_STD_VULTURE);
+    vultureMs_ = static_cast<int>(TIMER_STD_VULTURE - basetime);
     vultureTimer_.start(vultureMs_);
-    helicopterMs_ = static_cast<int>(basetime * TIMER_STD_HELICOPTER);
+    helicopterMs_ = static_cast<int>(TIMER_STD_HELICOPTER - basetime);
     helicopterTimer_.start(helicopterMs_);
-    aircraftMs_ = static_cast<int>(basetime * TIMER_STD_AIR_ENEMY);
+    aircraftMs_ = static_cast<int>(TIMER_STD_AIR_ENEMY - basetime);
     aircraftTimer_.start(aircraftMs_);
-    artilleryMs_ = static_cast<int>(basetime * TIMER_STD_ARTILLERY);
+    artilleryMs_ = static_cast<int>(TIMER_STD_ARTILLERY - basetime);
     artilleryTimer_.start(artilleryMs_);
 
     int baselife = level_->enemyLifeBase();
-    tankLife_ = baselife * LIFE_TANK;
-    vultureLife_ = baselife * LIFE_VULTURE;
-    helicopterLife_ = baselife * LIFE_HELICOPTER;
-    aircraftLife_ = baselife * LIFE_AIR_ENEMY;
-    artilleryLife_ = baselife * LIFE_ARTILLERY;
+    tankLife_ = baselife + LIFE_TANK;
+    vultureLife_ = baselife + LIFE_VULTURE;
+    helicopterLife_ = baselife + LIFE_HELICOPTER;
+    aircraftLife_ = baselife + LIFE_AIR_ENEMY;
+    artilleryLife_ = baselife + LIFE_ARTILLERY;
 
     // selects the next background based on level id
     if(state_ == GS_DEMO)
-        QPixmapCache::find("background_1", background_);
+    {
+        currentBackground_ = background1_;
+    }
     else
     {
-        QString s = level_->currentBackground();
-        if(!QPixmapCache::find(s, background_))
-            QPixmapCache::find("background_1", background_);
-
-        qDebug() << s;
+        switch(level_->currentBackground())
+        {
+            case 1:
+                currentBackground_ = background1_;
+            break;
+            case 2:
+                currentBackground_ = background2_;
+            break;
+            case 3:
+                currentBackground_ = background3_;
+            break;
+            case 4:
+                currentBackground_ = background4_;
+            break;
+            case 5:
+                currentBackground_ = background5_;
+            break;
+            case 6:
+                currentBackground_ = background6_;
+            break;
+            case 7:
+                currentBackground_ = background7_;
+            break;
+            default:
+                currentBackground_ = background1_;
+            break;
+        }
     }
-
 }
 
 void Game::processLife()
@@ -505,8 +538,8 @@ QSharedPointer<T> Game::createEntity(EntityPool<T, N> *pool, int life, QPointF p
     return e;
 }
 
-
 void Game::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    painter->drawPixmap(rect, background_, rect);
+    painter->drawPixmap(rect, currentBackground_, rect);
 }
+

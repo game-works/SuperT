@@ -3,11 +3,10 @@
 
 #include <QObject>
 
-static const int LEVEL_MANAGER_POINT_THRESHOLD = 50;
-static const int LEVEL_MANAGER_SPECIAL_BASE = 40;
+static const int LEVEL_MANAGER_POINT_THRESHOLD = 200;
+static const int LEVEL_MANAGER_SPECIAL_BASE = 100;
 static const int LEVEL_MANAGER_LIFE_BASE = 50;
 static const int LEVEL_MANAGER_POINT_BASE = 5;
-
 
 //!
 //! \brief The LevelManager class - "manage" level changes and game overall difficulty associated with level
@@ -30,7 +29,7 @@ public:
     //! \brief currentBackground - a background to be used on the current level
     //! \return
     //!
-    QString currentBackground();
+    int currentBackground();
 
     //!
     //! \brief enemyLifeBase - the base life value for enemy on the current level

@@ -51,10 +51,10 @@ static const int TIMER_STD_TANK = 11000;
 
 //! default life for enemies
 static const int LIFE_AIR_ENEMY = 1;
-static const int LIFE_VULTURE = 8;
-static const int LIFE_HELICOPTER = 3;
-static const int LIFE_ARTILLERY = 4;
-static const int LIFE_TANK = 3;
+static const int LIFE_VULTURE = 4;
+static const int LIFE_HELICOPTER = 2;
+static const int LIFE_ARTILLERY = 3;
+static const int LIFE_TANK = 2;
 static const int LIFE_PROP = 1;
 
 //!
@@ -84,7 +84,7 @@ class Game : public QGraphicsView
 
 public:
     Game(QGraphicsScene *scene, QWidget *parent = nullptr);
-    ~Game();
+    ~Game() override;
 
     QSharedPointer<Player> player() const;
 
@@ -99,9 +99,9 @@ public:
     void specialCoolDownWarning(int currentcooldown);
 
 protected:
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
 
-    void keyReleaseEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event) override;
 
     //!
     //!
@@ -121,7 +121,7 @@ protected:
 
     // QGraphicsView interface
 protected:
-    void drawBackground(QPainter *painter, const QRectF &rect);
+    void drawBackground(QPainter *painter, const QRectF &rect) override;
 
 protected slots:
 
@@ -301,7 +301,16 @@ private:
     QTimer artilleryTimer_;
     QTimer tankTimer_;
 
-    QPixmap background_;
+// levels background
+    QPixmap background1_;
+    QPixmap background2_;
+    QPixmap background3_;
+    QPixmap background4_;
+    QPixmap background5_;
+    QPixmap background6_;
+    QPixmap background7_;
+
+    QPixmap currentBackground_;
 
 //  THE FOLLOWING ATTRIBUTES NEED TO BE INITIALIZED IN CONSTRUCTOR
 

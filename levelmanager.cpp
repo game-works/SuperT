@@ -29,22 +29,20 @@ void LevelManager::consumePlayerSpecial()
     playerSpecials_--;
 }
 
-
-QString LevelManager::currentBackground()
+int LevelManager::currentBackground()
 {
-    auto b = (level_ % 7) + 1; // there are 7 background images... start from 2
-    QString background = QString("background_%1").arg(b);
-    return background;
+    // there are 7 background images... start from 2
+    return (level_ % 7);
 }
 
 int LevelManager::enemyLifeBase()
 {
-    return static_cast<int>(log(level_) + 1); // 1 life points base
+    return level_;
 }
 
 qreal LevelManager::enemySpawnBase()
 {
-    return (1.0/level_);
+    return level_ * 50;
 }
 
 int LevelManager::playerSpecials() const

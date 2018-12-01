@@ -168,6 +168,7 @@ void Menu::startSlot()
 void Menu::showAbout()
 {
     show(false);
+    title_->setVisible(true);
     abouttext_->setVisible(true);
     back_->setVisible(true);
 }
@@ -175,6 +176,7 @@ void Menu::showAbout()
 void Menu::showScore()
 {
     show(false);
+    title_->setVisible(true);
     scoretext_->setVisible(true);
     back_->setVisible(true);
 }
@@ -182,6 +184,7 @@ void Menu::showScore()
 void Menu::showHelp()
 {
     show(false);
+    title_->setVisible(true);
     helptext_->setVisible(true);
     back_->setVisible(true);
 }
@@ -189,6 +192,7 @@ void Menu::showHelp()
 void Menu::showGameOver()
 {
     show(false);
+    title_->setVisible(true);
     gameOver_->setVisible(true);
     back_->setVisible(true);
     gameOver_->animateColor();
