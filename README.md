@@ -1,4 +1,4 @@
-# SuperT - A game made using Qt/QGraphicsView framework.
+# SuperT - A game using Qt/QGraphicsView framework.
 MIT license.
 
 This game is a second iteration (or should I say tentative) to make a simple game. The motivation was to improve my understanding of Qt/QGraphics framework. Some of the design ideas were copied from this great book: http://www.gameprogrammingpatterns.com/
