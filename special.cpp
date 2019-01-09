@@ -1,14 +1,17 @@
 #include "special.h"
 
-#include <QPixmapCache>
 #include <QtMath>
+
 #include "game.h"
 #include "shotcommand.h"
+
+static const qreal SPECIAL_PASS_TIME = GAME_WIDTH/SPECIAL_STD_VELOCITY.x();
+static const qreal DELTA_TIME = 0.5;
 
 Special::Special(QGraphicsScene *scene) : Entity(scene), time_(0), firerate_(0)
 {
     QPixmap p;
-    if(QPixmapCache::find("friend", p))
+    if(SpritePackCache::find("air_friend_1", p))
         setPixmap(p);
 }
 
@@ -29,13 +32,13 @@ void Special::init(QPointF pos, QPointF vel, qreal angle, int life)
 void Special::update(Game *game, int dt)
 {
     time_ += dt;
-    //first pass
-    if(time_ < 2800) //2.8 sec
+    //first pass this solution is based on game width
+    if(time_ < SPECIAL_PASS_TIME)
     {
-        velocity_.setY(0.3*qFastSin(qDegreesToRadians(position_.x())));
+        velocity_.setY(0.5*qFastSin(qDegreesToRadians(position_.x())));
         //aircraft attack
         firerate_+= dt;
-        if(firerate_ > 50)
+        if(firerate_ > 120)
         {
             QPointF v = SHOT_STD_VELOCITY;
             v.setX(v.x() + velocity_.x());
@@ -49,7 +52,7 @@ void Special::update(Game *game, int dt)
         position_.setY(GAME_HEIGHT/4);
     }
     // second pass
-    if(time_ > 3000) // 3 sec
+    else if(time_ < (SPECIAL_PASS_TIME + SPECIAL_PASS_TIME + DELTA_TIME)) // 5.1 sec
     {
         velocity_.setY(0.1*qFastSin(qDegreesToRadians(position_.x())));
         //aircraft attack
@@ -60,9 +63,9 @@ void Special::update(Game *game, int dt)
             firerate_ = 0;
         }
     }
-     Entity::update(game, dt);
+    Entity::update(game, dt);
 
-    if(time_ > 6500) //remove special after 6.5s
+    if(time_ > SPECIAL_PASS_TIME + SPECIAL_PASS_TIME + DELTA_TIME + DELTA_TIME) //remove special after 10.5s
         life_--;
 
     Q_UNUSED(game);

@@ -50,7 +50,7 @@ void Entity::reset()
 {
     position_ = (QPointF(0.0, 0.0));
     velocity_ = (QPointF(0.0, 0.0));
-    life_ = (0.0f);
+    life_ = 0;
     name_.clear();
     inuse_ = (false);
     air_ = (false);
@@ -71,7 +71,7 @@ void Entity::init(QPointF pos, QPointF vel, qreal angle, int life)
     position_ = pos;
     velocity_ = vel;
     life_ = life;
-    //name_.clear();
+
     inuse_ = (true);
     air_ = (false);
     collidable_ = (false);

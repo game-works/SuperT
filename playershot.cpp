@@ -1,7 +1,6 @@
 #include "playershot.h"
 
 #include <QGraphicsPixmapItem>
-#include <QPixmapCache>
 #include <QRandomGenerator>
 
 #include "game.h"
@@ -9,7 +8,7 @@
 PlayerShot::PlayerShot(QGraphicsScene* scene) : Entity(scene)
 {
     QPixmap p;
-    if(QPixmapCache::find("bullet", p))
+    if(SpritePackCache::find("air_friend_bullet_1", p))
         setPixmap(p);
 }
 

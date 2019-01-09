@@ -11,6 +11,10 @@ static const QPointF VUL_STD_VELOCITY = QPointF(VUL_STD_VELOCITY_X, VUL_STD_VELO
 //! in miliseconds
 static const int VUL_WAIT_TO_ATTACK = 5500;
 static const int VUL_WAIT_TO_MOVE = 3000;
+
+
+class SpriteSheet;
+
 //!
 //! \brief The Vulture class
 //!
@@ -25,8 +29,11 @@ public:
     void init(QPointF pos = QPointF(0, 0), QPointF vel = VUL_STD_VELOCITY, qreal angle = 0.0, int life = 1) override;
     void update(Game *game, int dt) override;
 
+
 private:
     int timer_;
     int wait_;
+
+
 };
 #endif // VULTURE_H

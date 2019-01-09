@@ -22,6 +22,7 @@ void LevelManager::increasePlayerPoint()
     {
         emit increaseLife();
     }
+
 }
 
 void LevelManager::consumePlayerSpecial()

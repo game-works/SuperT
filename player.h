@@ -15,8 +15,6 @@ static const int PLAYER_START_LIFE = 30;
 //!
 static const QPointF PLAYER_STD_VELOCITY = QPointF(0.01,0.02);
 
-class SpriteSheet;
-
 //!
 //! \brief The Player class - the player is a basic entity with an special update method
 //!

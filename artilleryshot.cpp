@@ -1,9 +1,7 @@
 #include "artilleryshot.h"
 
 #include <QGraphicsPixmapItem>
-#include <QPixmapCache>
 #include <QRandomGenerator>
-
 #include <QtMath>
 
 #include "game.h"
@@ -13,7 +11,7 @@ ArtilleryShot::ArtilleryShot(QGraphicsScene* scene)
       angle_(0.0), vel_(0.0), speed_(0.0)
 {
     QPixmap p;
-    if(QPixmapCache::find("artilleryshot", p))
+    if(SpritePackCache::find("gnd_enemy_bullet_1", p))
         setPixmap(p);
 }
 

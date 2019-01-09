@@ -1,7 +1,6 @@
 #include "playerbomb.h"
 
 #include <QGraphicsPixmapItem>
-#include <QPixmapCache>
 #include <QRandomGenerator>
 
 #include <QtMath>
@@ -11,7 +10,7 @@
 PlayerBomb::PlayerBomb(QGraphicsScene* scene) : Entity(scene)
 {
     QPixmap p;
-    if(QPixmapCache::find("bomb", p))
+    if(SpritePackCache::find("bomb", p))
         setPixmap(p);
 }
 

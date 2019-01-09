@@ -1,16 +1,16 @@
 #include "vulture.h"
 
-#include <QPixmapCache>
 #include <QGraphicsPixmapItem>
 #include <QRandomGenerator>
-
+#include "spritesheet.h"
 #include "game.h"
 
 Vulture::Vulture(QGraphicsScene *scene) : Entity(scene), timer_(0), wait_(0)
 {
     QPixmap p;
-    if(QPixmapCache::find("vulture", p))
+    if(SpritePackCache::find("vulture", p))
         setPixmap(p);
+
 }
 
 void Vulture::init(QPointF pos, QPointF vel, qreal angle, int life)
@@ -45,7 +45,23 @@ void Vulture::update(Game *game, int dt)
     }
     else // normal move
     {
-         velocity_.setX(VUL_STD_VELOCITY_X);
+        velocity_.setX(VUL_STD_VELOCITY_X);
     }
+
+    if (dead())
+    {
+        // TODO
+        // what I dont like in this code is the fact that I'm delegating to QGraphicsScene to manage this item,
+        // it should be managed like all other items by the pool of entities at the game class
+        QPixmap exp;
+        SpritePackCache::find("blood_exp", exp );
+        SpriteSheet *ss = new SpriteSheet(339, 339, exp, 9, 0, 0, 0);
+        scene()->addItem(ss);
+        ss->setScale(0.2);
+        ss->setPos(this->pos());
+        ss->animate(25, false, 0, true);
+    }
+
     Entity::update(game, dt);
 }
+

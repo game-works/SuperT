@@ -58,7 +58,7 @@ public:
     virtual void hit();
 
     //!
-    //! \brief dead - a check to tell if the entity is dead (true) or not (false)
+    //! \brief dead - a check to tell if the entity is on  dead state (true) or not (false)
     //! \return
     //!
     virtual bool dead();

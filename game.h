@@ -26,6 +26,7 @@
 #include "artilleryshot.h"
 #include "special.h"
 #include "levelmanager.h"
+#include "spritepackcache.h"
 
 //! GAME main loop refresh rate
 static const int MS_TICK = 16;
@@ -34,10 +35,10 @@ static const int MS_TICK = 16;
 static const qreal GRAVITY = 9.81;
 
 //! game window size
-static const qreal GAME_WIDTH = 650;
-static const qreal GAME_HEIGHT = 450;
-static const qreal SCENE_WIDTH = 750.0;
-static const qreal SCENE_HEIGHT = 550.0;
+static const qreal GAME_WIDTH = 1024.0;
+static const qreal GAME_HEIGHT = 512.0;
+static const qreal SCENE_WIDTH = 1124.0;
+static const qreal SCENE_HEIGHT = 612.0;
 
 //! timers start values in milliseconds
 static const int TIMER_STD_CLOUD = 2600;
@@ -146,11 +147,6 @@ protected slots:
     void processLife();
 
 public slots:
-
-    //!
-    //! \brief removeExplosion
-    //!
-    void removeExplosion();
 
     //!
     //! \brief fpsUpdate
@@ -354,7 +350,6 @@ private:
 
     QSharedPointer<Hud> hud_;
     QSharedPointer<Menu> menu_;
-    QSharedPointer<SpriteSheet> explosion_;
     QSharedPointer<Special> special_;
     QSharedPointer<LevelManager> level_; // current gameplay level
 

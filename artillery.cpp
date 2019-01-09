@@ -1,6 +1,5 @@
 #include "artillery.h"
 
-#include <QPixmapCache>
 #include <QRandomGenerator>
 
 #include "game.h"
@@ -8,7 +7,7 @@
 Artillery::Artillery(QGraphicsScene *scene) : Entity (scene), firerate_(0), time_(0)
 {
     QPixmap p;
-    if(QPixmapCache::find("artillery", p))
+    if(SpritePackCache::find("gnd_enemy_2", p))
         setPixmap(p);
 }
 
@@ -51,6 +50,10 @@ void Artillery::update(Game *game, int dt)
     else
     {
         time_ = 0; // go back to start
+    }
+    if (dead())
+    {
+        game->createGroundExplosion(this->position(), this->velocity());
     }
     Entity::update(game, dt);
 }

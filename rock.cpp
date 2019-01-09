@@ -1,6 +1,5 @@
 #include "rock.h"
 
-#include <QPixmapCache>
 #include <QGraphicsPixmapItem>
 #include <QRandomGenerator>
 
@@ -16,10 +15,10 @@ Rock::Rock(QGraphicsScene *scene) : Entity(scene)
     switch(QRandomGenerator::global()->bounded(2))
     {
         case 0:
-            ok = QPixmapCache::find("rock_01", p);
+            ok = SpritePackCache::find("rock_01", p);
             break;
         case 1:
-            ok = QPixmapCache::find("rock_02", p);
+            ok = SpritePackCache::find("rock_02", p);
             break;
     }
     if(ok)

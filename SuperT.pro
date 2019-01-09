@@ -4,7 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets opengl
+QT       += core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 
 TARGET = SuperT
 TEMPLATE = app
@@ -50,7 +53,8 @@ SOURCES += \
     specialcommand.cpp \
     menu.cpp \
     customtextitem.cpp \
-    levelmanager.cpp
+    levelmanager.cpp \
+    spritepackcache.cpp
 
 HEADERS += \
         game.h \
@@ -81,7 +85,8 @@ HEADERS += \
     specialcommand.h \
     menu.h \
     customtextitem.h \
-    levelmanager.h
+    levelmanager.h \
+    spritepackcache.h
 
 RESOURCES += \
     images.qrc

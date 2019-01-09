@@ -1,10 +1,7 @@
 #include "bush.h"
 
-#include <QPixmapCache>
 #include <QGraphicsPixmapItem>
 #include <QRandomGenerator>
-
-#include <QDebug>
 
 #include "game.h"
 
@@ -16,13 +13,13 @@ Bush::Bush(QGraphicsScene *scene) : Entity(scene)
     switch(QRandomGenerator::global()->bounded(3))
     {
         case 0:
-            ok = QPixmapCache::find("bush_1", p);
+            ok = SpritePackCache::find("bush_1", p);
             break;
         case 1:
-            ok = QPixmapCache::find("bush_2", p);
+            ok = SpritePackCache::find("bush_2", p);
             break;
         case 2:
-            ok = QPixmapCache::find("bush_3", p);
+            ok = SpritePackCache::find("bush_3", p);
             break;
     }
     if(ok)

@@ -1,6 +1,5 @@
 #include "explosion.h"
 
-#include <QPixmapCache>
 #include <QRandomGenerator>
 
 #include "game.h"
@@ -43,10 +42,10 @@ GroundExplosion::GroundExplosion(QGraphicsScene *scene) : Explosion (scene)
 
     //load the pixmaps to be used by the explosion
     int i = 0;
-    for(auto &e : pixmapList_)
+    for(auto e : pixmapList_)
     {
         QPixmap pix;
-        QPixmapCache::find(pixmapPathMask_.arg(i), pix);
+        SpritePackCache::find(pixmapPathMask_.arg(i), pix);
         e  = pix;
         i++;
     }
@@ -77,10 +76,10 @@ AirExplosion::AirExplosion(QGraphicsScene *scene) : Explosion(scene)
 
     int i = 0;
     //load the pixmaps to be used by the explosion
-    for(auto &e : pixmapList_)
+    for(auto e : pixmapList_)
     {
         QPixmap pix;
-        QPixmapCache::find(pixmapPathMask_.arg(i), pix);
+        SpritePackCache::find(pixmapPathMask_.arg(i), pix);
         e  = pix;
         i++;
     }

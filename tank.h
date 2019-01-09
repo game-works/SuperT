@@ -14,8 +14,8 @@ static const int TANK_FIRE_RATE = 300;
 static const int TANK_WAIT_TO_ATTACK = 2000;
 static const int TANK_WAIT_TO_MOVE = 4000;
 //!
-static const QPointF TANK_FIRE_A_DELTA_POS = QPointF(9, 23);
-static const QPointF TANK_FIRE_B_DELTA_POS = QPointF(18, 22);
+static const QPointF TANK_FIRE_A_DELTA_POS = QPointF(15, 1);
+static const QPointF TANK_FIRE_B_DELTA_POS = QPointF(15, 15);
 static const QPointF TANK_FIRE_VELOCITY = QPointF(-0.35,-0.2);
 static const qreal TANK_FIRE_ANGLE = 45.0;
 

@@ -5,7 +5,7 @@
 
 #include "game.h"
 
-static const qreal MENU_X = GAME_WIDTH / 2.9; //looks much better than 3.0 :P
+static const qreal MENU_X = GAME_WIDTH / 2.0; //looks much better than 3.0 :P
 
 static const qreal MENU_TITLE_Y = 0;
 static const qreal MENU_START_Y = 100;
@@ -127,10 +127,10 @@ void Menu::init()
     abouttext_->setDefaultTextColor(Qt::darkBlue);
 
     title_->setPos((GAME_WIDTH/2.0)-title_->boundingRect().center().x(), MENU_TITLE_Y);
-    start_->setPos(MENU_X, MENU_START_Y);
-    score_->setPos(MENU_X, MENU_SCORE_Y);
-    help_->setPos(MENU_X, MENU_HELP_Y);
-    about_->setPos(MENU_X, MENU_ABOUT_Y);
+    start_->setPos((GAME_WIDTH/2.0)-start_->boundingRect().center().x(), MENU_START_Y);
+    score_->setPos((GAME_WIDTH/2.0)-score_->boundingRect().center().x(), MENU_SCORE_Y);
+    help_->setPos((GAME_WIDTH/2.0)-help_->boundingRect().center().x(), MENU_HELP_Y);
+    about_->setPos((GAME_WIDTH/2.0)-about_->boundingRect().center().x(), MENU_ABOUT_Y);
     back_->setPos((GAME_WIDTH/2.0)-back_->boundingRect().center().x(), MENU_BACK_Y);
     gameOver_->setPos((GAME_WIDTH/2.0)-gameOver_->boundingRect().center().x(), GAME_HEIGHT/3.0);
 

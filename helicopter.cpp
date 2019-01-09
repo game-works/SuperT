@@ -1,6 +1,5 @@
 #include "helicopter.h"
 
-#include <QPixmapCache>
 #include <QGraphicsPixmapItem>
 #include <QRandomGenerator>
 
@@ -12,7 +11,7 @@ Helicopter::Helicopter(QGraphicsScene *scene)
     : Entity(scene), firerate_(0), time_(0), upwards_(false)
 {
     QPixmap p;
-    if(QPixmapCache::find("air_enemy_6", p))
+    if(SpritePackCache::find("air_enemy_6", p))
         setPixmap(p);
 }
 
@@ -85,6 +84,10 @@ void Helicopter::update(Game *game, int dt)
     else
     {
         time_ = 0; // go back to start
+    }
+    if (dead())
+    {
+        game->createAirExplosion(this->position(), this->velocity());
     }
     Entity::update(game, dt);
 }

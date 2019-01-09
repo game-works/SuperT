@@ -3,7 +3,7 @@
 #include <QTime>
 #include <QKeyEvent>
 #include <QGraphicsScene>
-#include <QPixmapCache>
+
 #include <QGraphicsItem>
 #include <QRandomGenerator>
 #include <QDebug>
@@ -16,6 +16,7 @@
 #include "hud.h"
 #include "menu.h"
 #include "spritesheet.h"
+
 
 Game::Game(QGraphicsScene *scene, QWidget *parent)
     : QGraphicsView (scene, parent),
@@ -79,11 +80,6 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
     connect(menu_.data(), &Menu::start, this, &Game::play);
     connect(menu_.data(), &Menu::showSignal, this, &Game::init);
 
-    explosion_ = QSharedPointer<SpriteSheet>(new SpriteSheet(130, 125, ":/exp/air/images/supert_exp.png", 37, 0, 0, -40));
-    explosion_->setParentItem(player_.data()); // bind explosion effect with player
-    explosion_->setVisible(false);
-    connect(explosion_.data(), &SpriteSheet::animationEnd, this, &Game::removeExplosion);
-
     //start game initial values and the main loop
     inputhandler_.bind(Qt::Key_Up, QSharedPointer<Command>(new MoveCommand(DIR_UP)));
     inputhandler_.bind(Qt::Key_Down, QSharedPointer<Command>(new MoveCommand(DIR_DOWN)));
@@ -93,13 +89,13 @@ Game::Game(QGraphicsScene *scene, QWidget *parent)
     inputhandler_.bind(Qt::Key_Control, QSharedPointer<Command>(new BombCommand()));
     inputhandler_.bind(Qt::Key_Alt, QSharedPointer<Command>(new SpecialCommand()));
 
-    background1_ = QPixmap(":/scenario/images/background_1.png");
-    background2_ = QPixmap(":/scenario/images/background_2.png");
-    background3_ = QPixmap(":/scenario/images/background_3.png");
-    background4_ = QPixmap(":/scenario/images/background_4.png");
-    background5_ = QPixmap(":/scenario/images/background_5.png");
-    background6_ = QPixmap(":/scenario/images/background_6.png");
-    background7_ = QPixmap(":/scenario/images/background_7.png");
+    SpritePackCache::find("background_2", background1_);
+    SpritePackCache::find("background_1", background2_);
+    SpritePackCache::find("background_5", background3_);
+    SpritePackCache::find("background_7", background4_);
+    SpritePackCache::find("background_6", background5_);
+    SpritePackCache::find("background_3", background6_);
+    SpritePackCache::find("background_4", background7_);
 
     currentBackground_ = background1_;
 
@@ -129,7 +125,6 @@ Game::~Game()
     delete artilleryShots_;
 
     player_.clear();
-    explosion_.clear();
     special_.clear();
     hud_.clear();
     menu_.clear();
@@ -235,11 +230,6 @@ void Game::processLife()
     // TODO maybe introduce a temporary invencibility for fun
 }
 
-void Game::removeExplosion()
-{
-    explosion_->setVisible(false);
-}
-
 void Game::fpsUpdate()
 {
     fps_ = fps_counter_;
@@ -249,9 +239,6 @@ void Game::fpsUpdate()
 void Game::init()
 {
     tick_.stop();
-
-    explosion_->stop();
-    explosion_->setVisible(false);
 
     level_->reset();
 
@@ -450,22 +437,10 @@ void Game::loop()
         foreach(QSharedPointer<Entity> e, entities_)
         {
             // check if the entity is visible on the scene
-            if(e->dead())
-            {
-                if(e->destructible())
-                {
-                    if(e->air())
-                        createAirExplosion(e->position(), e->velocity());
-                    else
-                        createGroundExplosion(e->position(), e->velocity());
-                }
-                e->reset();
-                entities_.remove(e);
-            }
-            else if(e->position().x() < (GAME_WIDTH-SCENE_WIDTH) || // adds margin area
-                    e->position().x() > SCENE_WIDTH ||
-                    e->position().y() < (GAME_HEIGHT-SCENE_HEIGHT) || // adds margin area
-                    e->position().y() > SCENE_HEIGHT) // simple and fast to check if the entity is out of the scene
+            if(e->dead() || (e->position().x() < (GAME_WIDTH-SCENE_WIDTH) || // adds margin area
+                             e->position().x() > SCENE_WIDTH ||
+                             e->position().y() < (GAME_HEIGHT-SCENE_HEIGHT) || // adds margin area
+                             e->position().y() > SCENE_HEIGHT)) // simple and fast to check if the entity is out of the scene
             {
                 // resets internal entity value, also "return" an entity to the its pool
                 e->reset();
@@ -473,8 +448,6 @@ void Game::loop()
             }
             else
             {
-                e->update(this, elapsed);
-
                 // check enemies hit by friends only
                 if(e->enemy() && e->collidable() && e->destructible())
                 {
@@ -496,8 +469,8 @@ void Game::loop()
                             }
                         }
                     }
-
                 }
+                e->update(this, elapsed);
             }
         }
 
@@ -512,12 +485,9 @@ void Game::loop()
             {
                 player_->hit();
                 enemy->hit();
-                explosion_->setVisible(true);
-                explosion_->animate(35);
                 if(state_ == GS_PLAY && player_->dead())
                 {
                     state_ = GS_OVER;
-                    explosion_->animate(25, true);
                     menu_->showGameOver();
                     hud_->show(false);
                 }

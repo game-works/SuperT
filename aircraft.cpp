@@ -1,9 +1,7 @@
 #include "aircraft.h"
 
-#include <QPixmapCache>
 #include <QGraphicsPixmapItem>
 #include <QRandomGenerator>
-
 #include <QtMath>
 
 #include "game.h"
@@ -16,19 +14,19 @@ Aircraft::Aircraft(QGraphicsScene *scene) : Entity(scene), firerate_ (0)
     switch(QRandomGenerator::global()->bounded(5))
     {
         case 0:
-            ok = QPixmapCache::find("air_enemy_1", p);
+            ok = SpritePackCache::find("air_enemy_1", p);
             break;
         case 1:
-            ok = QPixmapCache::find("air_enemy_2", p);
+            ok = SpritePackCache::find("air_enemy_2", p);
             break;
         case 2:
-            ok = QPixmapCache::find("air_enemy_3", p);
+            ok = SpritePackCache::find("air_enemy_3", p);
             break;
         case 3:
-            ok = QPixmapCache::find("air_enemy_4", p);
+            ok = SpritePackCache::find("air_enemy_4", p);
             break;
         case 4:
-            ok = QPixmapCache::find("air_enemy_5", p);
+            ok = SpritePackCache::find("air_enemy_5", p);
             break;
     }
     if(ok)
@@ -64,6 +62,10 @@ void Aircraft::update(Game *game, int dt)
     {
         game->createEnemyShot(position_ + boundingRect().center(), ES_STD_VELOCITY);
         firerate_ = 0;
+    }
+    if (dead())
+    {
+        game->createAirExplosion(this->position(), this->velocity());
     }
     Entity::update(game, dt);
 }

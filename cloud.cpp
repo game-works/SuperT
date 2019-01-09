@@ -1,7 +1,6 @@
 #include "cloud.h"
 #include <QRandomGenerator>
 #include <QGraphicsPixmapItem>
-#include <QPixmapCache>
 
 #include "game.h"
 
@@ -13,13 +12,13 @@ Cloud::Cloud(QGraphicsScene *scene) : Entity(scene)
     switch(QRandomGenerator::global()->bounded(3))
     {
         case 0:
-            ok = QPixmapCache::find("cloud_1", p);
+            ok = SpritePackCache::find("cloud_01", p);
             break;
         case 1:
-            ok = QPixmapCache::find("cloud_2", p);
+            ok = SpritePackCache::find("cloud_02", p);
             break;
         case 2:
-            ok = QPixmapCache::find("cloud_3", p);
+            ok = SpritePackCache::find("cloud_03", p);
             break;
     }
     if(ok)

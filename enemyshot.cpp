@@ -9,7 +9,7 @@
 EnemyShot::EnemyShot(QGraphicsScene* scene) : Entity(scene)
 {
     QPixmap p;
-    if(QPixmapCache::find("enemy_bullet", p))
+    if(SpritePackCache::find("air_enemy_bullet_1", p))
         setPixmap(p);
 }
 
