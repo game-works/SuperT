@@ -1,11 +1,10 @@
 # SuperT - A game using Qt/QGraphicsView framework.
-MIT license.
 
 This game is a second iteration (or should I say tentative) to make a simple game. The motivation was to improve my understanding of Qt/QGraphics framework. Some of the design ideas were copied from this great book: http://www.gameprogrammingpatterns.com/
 
-There is a ton of things to improve, ranging from design (maybe use composition in form of an ECS) and performance. I've ended up using SIGNAL/SLOTS from Qt and that wasn't on my plans, I've wanted to avoid using much of the Meta object from Qt, but that simplifies a lot the message broking between classes. Maybe on a further iteration I'll change this to a custo publish/subscriber solution.
+There is a ton of things to improve, ranging from design (maybe use composition in form of an EntityComponentSystem) and performance. I've ended up using SIGNAL/SLOTS from Qt and that wasn't on my plans, I've wanted to avoid using much of the Meta object features from Qt, but this feature simplifies a lot of the message broking between classes. Maybe on a further iteration I'll change this to a custom publish/subscriber solution.
 
-Some performance degradation is happening when a lot of entities are displayed maybe this might be related to QGraphicsScene management, another oportunity is to build a custom scene management.
+Some performance degradation is happening when a lot of entities are displayed (on release, that does not seem too noticeable) maybe this might be related to QGraphicsScene management, another improvement oportunity is to build a custom scene management.
 
 Also there is certanly some bugs here and there too, feel free to hunt them! 
 
@@ -26,3 +25,5 @@ Some screens of the game:
 ![main3](https://user-images.githubusercontent.com/2021800/48970706-aee47080-eff6-11e8-8d71-ce297ce73c9b.png)
 
 
+
+MIT license.
